@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "MCj5WPOB47Tktuo6fU7NeI4f6MGR7Y4WlpsIMor2NjW87sLIIkIG33z1nD2u93kmCUBvLrgOsZVNjOEatPPMDg==",
+  "success": true,
+  "projectFilePath": "/home/redcube/RiderProjects/ReLib/Relib/Relib.csproj",
+  "expectedPackageFiles": [
+    "/home/redcube/.nuget/packages/raylib-cs/3.5.0/raylib-cs.3.5.0.nupkg.sha512",
+    "/home/redcube/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "/home/redcube/.nuget/packages/microsoft.netcore.app.host.linux-x64/3.1.12/microsoft.netcore.app.host.linux-x64.3.1.12.nupkg.sha512"
+  ],
+  "logs": []
+}
