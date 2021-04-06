@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/redcube/RiderProjects/ReLib/Relib/Relib.csproj": {}
+    "/external/RiderProjects/ReLib/Relib/Relib.csproj": {}
   },
   "projects": {
-    "/home/redcube/RiderProjects/ReLib/Relib/Relib.csproj": {
+    "/external/RiderProjects/ReLib/Relib/Relib.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/redcube/RiderProjects/ReLib/Relib/Relib.csproj",
+        "projectUniqueName": "/external/RiderProjects/ReLib/Relib/Relib.csproj",
         "projectName": "Relib",
-        "projectPath": "/home/redcube/RiderProjects/ReLib/Relib/Relib.csproj",
+        "projectPath": "/external/RiderProjects/ReLib/Relib/Relib.csproj",
         "packagesPath": "/home/redcube/.nuget/packages/",
-        "outputPath": "/home/redcube/RiderProjects/ReLib/Relib/obj/",
+        "outputPath": "/external/RiderProjects/ReLib/Relib/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/redcube/.nuget/NuGet/NuGet.Config"
@@ -60,7 +60,7 @@
             },
             {
               "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[3.1.12, 3.1.12]"
+              "version": "[3.1.13, 3.1.13]"
             }
           ],
           "frameworkReferences": {
@@ -68,7 +68,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.103/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.104/RuntimeIdentifierGraph.json"
         }
       }
     }

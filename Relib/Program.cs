@@ -5,8 +5,14 @@ using System.Numerics;
 using System.Reflection.PortableExecutable;
 using System.Runtime.ConstrainedExecution;
 using Raylib_cs;
+using System.Linq;
+using System.Reflection;
 using snv3 = System.Numerics.Vector3;
 using snv2 = System.Numerics.Vector2;
+using rlv3 = Relib.Relib.Vector3;
+using rlv2 = Relib.Relib.Vector2;
+using col = Relib.Relib.Color;
+using co = Raylib_cs.Color;
 
 namespace Relib
 {
@@ -14,36 +20,7 @@ namespace Relib
     {
         static void Main(string[] args)
         {
-            Directory.SetCurrentDirectory("/home/redcube/Desktop");
-            Raylib.InitWindow(800,800, "Test");
-
-            var cam = new Raylib_cs.Camera3D();
-            cam.position = new System.Numerics.Vector3(5, 5, 5);
-            cam.target = new System.Numerics.Vector3(0, 2, 0);
-            cam.up = new System.Numerics.Vector3(0, 1f, 0);
-            cam.fovy = 45.0f;
-            cam.type = Raylib_cs.CameraType.CAMERA_PERSPECTIVE;
-
-            var angle = 0f;
-            int mcount = 0;
-            var model = Raylib.LoadModel("/home/redcube/Desktop/teapot.obj");
-
-            while (!Raylib.WindowShouldClose())
-            {
-                Raylib.BeginDrawing();
-                Raylib.ClearBackground(new Color(26, 26, 26, 255));
-
-                Raylib.BeginMode3D(cam);
-                Raylib.DrawModelEx(model, Vector3.Zero, Vector3.UnitY, angle, Vector3.One, Color.WHITE);
-                Raylib.EndMode3D();
-                
-                Raylib.EndDrawing();
-
-                angle += Raylib.GetFrameTime() * 30;
-                if (angle > 360)
-                    angle -= 360;
-            }
-            Raylib.CloseWindow();
+            
         }
     }
 
@@ -637,12 +614,28 @@ namespace Relib
         public class Matrix
         {
             private Matrix4x4 m;
+            public float M11 { get { return m.M11; } set {m.M11 = value;}}
+            public float M12 { get { return m.M12; } set {m.M12 = value;}}
+            public float M13 { get { return m.M13; } set {m.M13 = value;}}
+            public float M14 { get { return m.M14; } set {m.M14 = value;}}
+            public float M21 { get { return m.M21; } set {m.M21 = value;}}
+            public float M22 { get { return m.M22; } set {m.M22 = value;}}
+            public float M23 { get { return m.M23; } set {m.M23 = value;}}
+            public float M24 { get { return m.M24; } set {m.M24 = value;}}
+            public float M31 { get { return m.M31; } set {m.M31 = value;}}
+            public float M32 { get { return m.M32; } set {m.M32 = value;}}
+            public float M33 { get { return m.M33; } set {m.M33 = value;}}
+            public float M34 { get { return m.M34; } set {m.M34 = value;}}
+            public float M41 { get { return m.M41; } set {m.M41 = value;}}
+            public float M42 { get { return m.M42; } set {m.M42 = value;}}
+            public float M43 { get { return m.M43; } set {m.M43 = value;}}
+            public float M44 { get { return m.M44; } set {m.M44 = value;}}
             
             public Matrix()
             {
                 m = new System.Numerics.Matrix4x4();
             }
-
+            
             public float Length() => m.GetDeterminant();
             public bool LengthSquared() => m.IsIdentity;
             public object GetSource() => m;
@@ -690,6 +683,13 @@ namespace Relib
             public Image()
             {
                 img = new Raylib_cs.Image();
+            }
+
+            public unsafe Color get_Pixel(int x, int y)
+            {
+                Span<Color> rgba = new Span<Color>(img.data.ToPointer(), (img.width * img.height));
+                var index = (y * img.width + x);
+                return rgba[index];
             }
             
             public object GetSource() => img;
@@ -913,7 +913,19 @@ namespace Relib
             {
                 shdr = new Raylib_cs.Shader();
             }
+
+            public unsafe void set_Loc(int index, int val)
+            {
+                Span<int> locs = new Span<int>(shdr.locs.ToPointer(), 25);
+                locs[index] = val;
+            }
             
+            public unsafe void set_LocS(string index, int val)
+            {
+                Span<int> locs = new Span<int>(shdr.locs.ToPointer(), 25);
+                locs[(int)Enum.Parse(typeof(ShaderLocationIndex), index)] = val;
+            }
+
             public object GetSource() => shdr;
             public void SetSource(object s) => shdr = (Raylib_cs.Shader)s;
         }
@@ -1059,6 +1071,29 @@ namespace Relib
             public void SetSource(object i) => info = (Raylib_cs.VrDeviceInfo)i;
         }
 
+        //class utils
+        public class MeshBuilder
+        {
+            private RLSharpMeshGen.MeshBuilder mb;
+            public bool get_Bound() => mb.Bound();
+        
+            public MeshBuilder()
+            {
+                mb = new RLSharpMeshGen.MeshBuilder();
+            }
+
+            public void Begin(int tris, bool colors, bool uvs, bool uv2s) => mb.Begin(tris, colors, uvs, uv2s);
+            public void AddTriangle(rlv3 aV, rlv3 aNor, rlv2 aUV, rlv3 bV, rlv3 bNor, rlv2 bUV, rlv3 cV, rlv3 cNor, rlv2 cUV)
+                => mb.AddTriangle((snv3)aV.GetSource(), (snv3)aNor.GetSource(), (snv2)aUV.GetSource(), (snv3)bV.GetSource(), (snv3)bNor.GetSource(), (snv2)bUV.GetSource(), (snv3)cV.GetSource(), (snv3)cNor.GetSource(), (snv2)cUV.GetSource());
+            //public void AddTriangleCol(rlv3 aV, rlv3 aNor, rlv2 aUV, col aCol, rlv3 bV, rlv3 bNor, rlv2 bUV, col bCol, rlv3 cV, rlv3 cNor, rlv2 cUV, col cCol)
+            //=> mb.AddTriangle((snv3)aV.GetSource(), (snv3)aNor.GetSource(), (snv2)aUV.GetSource(), (co)aCol.GetSource(), (snv3)bV.GetSource(), (snv3)bNor.GetSource(), (snv2)bUV.GetSource(), (co)bCol.GetSource(), (snv3)cV.GetSource(), (snv3)cNor.GetSource(), (snv2)cUV.GetSource(), (co)cCol.GetSource());
+            public Relib.Mesh Bind()
+            {
+                mb.Bind();
+                return Relib.RLMESHTOMESH(mb.Mesh);
+            }
+        }
+        
         // utils
         private static Vector2 RLV2TOV2(System.Numerics.Vector2 _v2)
         {
@@ -1134,7 +1169,7 @@ namespace Relib
             return sh;
         }
         
-        private static Mesh RLMESHTOMESH(Raylib_cs.Mesh m)
+        public static Mesh RLMESHTOMESH(Raylib_cs.Mesh m)
         {
             var mesh = new Mesh();
             mesh.SetSource(m);
