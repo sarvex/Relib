@@ -20,7 +20,7 @@ namespace Relib
     {
         static void Main(string[] args)
         {
-            
+            Raylib.SetWindowState(ConfigFlag.FLAG_WINDOW_UNDECORATED);
         }
     }
 
@@ -318,6 +318,7 @@ namespace Relib
         // Text Module
         public static Font GetFontDefault() => RLFNTTOFNT(Raylib.GetFontDefault());                                                           
         public static Font LoadFont(string fileName) => RLFNTTOFNT(Raylib.LoadFont(fileName));
+        public static Font LoadFontEx(string filename, int fontsize, int[] chars, int numOfChars) => RLFNTTOFNT(Raylib.LoadFontEx(filename, fontsize, chars, numOfChars));
         public static Font LoadFontFromImage(Image image, Color key, int firstChar) => RLFNTTOFNT(Raylib.LoadFontFromImage((Raylib_cs.Image)image.GetSource(), (Raylib_cs.Color)key.GetSource(), firstChar));
         public static void UnloadFont(Font font) => Raylib.UnloadFont((Raylib_cs.Font)font.GetSource());
         
